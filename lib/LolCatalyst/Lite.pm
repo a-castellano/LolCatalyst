@@ -65,7 +65,7 @@ L<LolCatalyst::Lite::Controller::Root>, L<Catalyst>
 
 =head1 AUTHOR
 
-azas,,,
+acastellano,,,
 
 =head1 LICENSE
 
