@@ -17,7 +17,7 @@ Catalyst JSON View.
 
 =head1 AUTHOR
 
-azas,,,
+acastellano,,,
 
 =head1 LICENSE
 
@@ -26,4 +26,5 @@ it under the same terms as Perl itself.
 
 =cut
 
+ __PACKAGE__->config({ expose_stash => [ qw/lol result/  ]  });
 1;
