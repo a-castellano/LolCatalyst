@@ -8,7 +8,7 @@ BEGIN { extends 'Catalyst::Controller' }
 # Sets the actions in this controller to be registered with no prefix
 # so they function identically to actions created in MyApp.pm
 #
-__PACKAGE__->config(namespace => '');
+__PACKAGE__->config( namespace => '' );
 
 =encoding utf-8
 
@@ -28,12 +28,11 @@ The root page (/)
 
 =cut
 
-sub index :Path :Args(0) {
+sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 }
 
-
-sub add : Local {  }
+sub add : Local { }
 
 =head2 default
 
@@ -41,10 +40,22 @@ Standard 404 error page
 
 =cut
 
-sub default :Path {
+sub default : Path {
     my ( $self, $c ) = @_;
-    $c->response->body( 'Page not found' );
+    $c->response->body('Page not found');
     $c->response->status(404);
+}
+
+sub translate : Local {
+    my ( $self, $c ) = @_;
+    my $lol = $c->req->body_params->{lol};    # only for a POST request
+         # $c->req->params->{lol} would catch GET or POST
+         # $c->req->query_params would catch GET params only
+    $c->stash(
+        lol      => $lol,
+        result   => $c->model('Translate')->translate($lol),
+        template => 'index.tt',
+    );
 }
 
 =head2 end
@@ -54,10 +65,20 @@ Attempt to render a view, if needed.
 =cut
 
 sub end : ActionClass('RenderView') {
-    my ($self, $c) = @_;
-    $c->response->headers->header(
-        'Last-Modified' => localtime(),
-    )
+    my ( $self, $c ) = @_;
+    my $errors = scalar @{ $c->error };
+    if ($errors) {
+        $c->res->status(500);
+        $c->res->body('internal server error');
+        $c->clear_errors;
+    }
+}
+
+sub translate_service : Local {
+    my ( $self, $c ) = @_;
+    $c->forward('translate');
+    $c->stash->{current_view} = 'Service';
+
 }
 
 =head1 AUTHOR

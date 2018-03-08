@@ -23,7 +23,7 @@ L<LolCatalyst::Lite>
 
 =head1 AUTHOR
 
-azas,,,
+azastellano,,,
 
 =head1 LICENSE
 
