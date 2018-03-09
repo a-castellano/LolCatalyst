@@ -81,6 +81,12 @@ sub translate_service : Local {
 
 }
 
+sub auto : Private {
+    my ( $self, $c ) = @_;
+    $c->authenticate;
+
+}
+
 =head1 AUTHOR
 
 Álvaro Castellano Vela

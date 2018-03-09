@@ -20,7 +20,12 @@ use Catalyst qw/
     -Debug
     ConfigLoader
     Static::Simple
-/;
+
+               Authentication
+               Authorization::Roles
+               Session
+               Session::State::Cookie
+               Session::Store::FastMmap /;
 
 extends 'Catalyst';
 
@@ -35,6 +40,10 @@ our $VERSION = '0.01';
 # with an external configuration file acting as an override for
 # local deployment.
 
+
+if ($ENV{APP_TEST} ) {
+    __PACKAGE__->config( 'Plugin::ConfigLoader' => {file => __PACKAGE__->path_to ('t/lib/lolcatalyst_lite_testing.conf')} );
+}
 __PACKAGE__->config(
     name => 'LolCatalyst::Lite',
     # Disable deprecated behavior needed by old applications
@@ -43,7 +52,25 @@ __PACKAGE__->config(
 );
 
 # Start the application
-__PACKAGE__->setup();
+__PACKAGE__->config( authentication => {
+    'default_realm' => 'users',
+    'realms' => {
+        'users' => {
+            'store' => {
+                'role_column' => 'role_text',
+                'user_class' => 'Auth::User',
+                'class' => 'DBIx::Class',
+            },
+            'credential' => {
+                 'password_type' => 'hashed',
+                 'password_field' => 'password',
+                 'password_hash_type' => 'SHA-1',
+                 'class' => 'HTTP',
+                 'type' => 'basic',
+             }
+        }
+    },
+});__PACKAGE__->setup();
 
 =encoding utf8
 
