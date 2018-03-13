@@ -17,6 +17,7 @@ requires 'namespace::autoclean';
 requires 'Config::General';
 requires 'Acme::LOLCAT';
 requires 'Module::Install::Catalyst';
+requires 'Catalyst::Model::Adaptor';
 
 recommends 'Pod::Usage';
 
