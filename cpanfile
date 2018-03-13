@@ -10,6 +10,7 @@ requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Config::General';
 requires 'Acme::LOLCAT';
+requires 'Module::Install::Catalyst';
 
 recommends 'Pod::Usage';
 
