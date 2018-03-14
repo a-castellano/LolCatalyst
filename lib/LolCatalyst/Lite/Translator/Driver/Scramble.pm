@@ -1,6 +1,8 @@
-package LolCatalyst::Lite::Translator::Scramble;
+package LolCatalyst::Lite::Translator::Driver::Scramble;
 
 use Moose;
+
+with 'LolCatalyst::Lite::Interface::TranslationDriver';
 
 # stolen from Catalyst::Plugin::Acme::Scramble under the Artistic License
 sub shuffle {
