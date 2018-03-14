@@ -1,8 +1,8 @@
-# commitmsg: initial external translator object and test
-# lib/LolCatalyst/Lite/Translator.pm
 package LolCatalyst::Lite::Translator;
 
+use Module::Pluggable::Object;
 use Moose;
+use aliased 'LolCatalyst::Lite::Interface::TranslationDriver';
 use namespace::clean -except => 'meta';
 
 has 'default_target' => (
@@ -20,7 +20,22 @@ has 'translators' => (
 
 sub _build_translators {
     my ($self) = @_;
-    return { LOLCAT => LolCatalyst::Lite::Translator::LOLCAT->new };
+    my $base = __PACKAGE__ . '::Driver';
+
+    my $mp = Module::Pluggable::Object->new( search_path => [$base] );
+    my @classes = $mp->plugins;
+
+    my %translators;
+    foreach my $class (@classes) {
+        Class::MOP::load_class($class);
+        unless ( $class->does(TranslationDriver) ) {
+            confess
+"Class ${class} in ${base}:: namespace does not implement Translation Driver interface";
+        }
+        ( my $name = $class ) =~ s/^\Q${base}::\E//;
+        $translators{$name} = $class->new;
+    }
+    return \%translators;
 }
 
 sub translate {
@@ -29,8 +44,8 @@ sub translate {
 }
 
 sub translate_to {
-        my ($self, $target, $text) = @_;
-            $self->translators->{$target}->translate($text);
+    my ( $self, $target, $text ) = @_;
+    $self->translators->{$target}->translate($text);
 }
 
 __PACKAGE__->meta->make_immutable;
