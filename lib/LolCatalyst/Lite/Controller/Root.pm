@@ -46,7 +46,7 @@ sub default : Path {
     $c->response->status(404);
 }
 
-sub translate : Local {
+sub translate : Private {
     my ( $self, $c ) = @_;
     my $lol = $c->req->body_params->{lol};    # only for a POST request
          # $c->req->params->{lol} would catch GET or POST
