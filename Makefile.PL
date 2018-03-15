@@ -13,7 +13,6 @@ requires 'Catalyst::Runtime' => '5.90115';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Action::RenderView';
-requires 'Acme::LOLCAT';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Plugin::Unicode';
@@ -33,6 +32,8 @@ requires 'Catalyst::Plugin::Session::Store::FastMmap';
 requires 'Catalyst::Authentication::Store::DBIx::Class';
 requires 'Catalyst::Authentication::Credential::HTTP';
 requires 'DBIx::Class::EncodedColumn';
+
+requires 'Acme::LOLCAT';
 
 install_script glob('script/*.pl');
 auto_install;
