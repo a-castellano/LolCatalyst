@@ -68,6 +68,8 @@ sub end : ActionClass('RenderView') {
     my ( $self, $c ) = @_;
     my $errors = scalar @{ $c->error };
     if ($errors) {
+        $c->log->error("Errors in ${\$c->action}:");
+        $c->log->error($_) for @{$c->error};
         $c->res->status(500);
         $c->res->body('internal server error');
         $c->clear_errors;
