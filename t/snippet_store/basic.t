@@ -1,9 +1,17 @@
 use strict;
 use warnings;
 use Test::More qw(no_plan);
+use Test::Exception;
 
 use_ok "LolCatalyst::Lite::SnippetStore";
-my $store     = LolCatalyst::Lite::SnippetStore->new;
+
+dies_ok {
+    LolCatalyst::Lite::SnippetStore->new;
+}
+'Create without translator object fails';
+
+my $store = LolCatalyst::Lite::SnippetStore->new( translator => 'DUMMY' );
+
 my $num_snips = 3;
 
 ok(
